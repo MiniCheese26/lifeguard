@@ -34,7 +34,7 @@ class _AddMiningAddressController extends State<AddMiningAddress> {
   onAddButtonPressed() {
     if (formKey.currentState != null) {
       if (formKey.currentState!.validate()) {
-        Navigator.pop(context);
+        //Navigator.pop(context);
       }
     }
   }
@@ -48,19 +48,6 @@ class _AddMiningAddressController extends State<AddMiningAddress> {
 class _AddMiningAddressView
     extends WidgetView<AddMiningAddress, _AddMiningAddressController> {
   _AddMiningAddressView(_AddMiningAddressController state) : super(state);
-
-  List<DropdownMenuItem<String>>? _getDropDownItems() {
-    List<DropdownMenuItem<String>>? items = List.empty(growable: true);
-
-    for (final value in poolDetails.entries) {
-      items.add(DropdownMenuItem(
-        child: Text(value.value),
-        value: value.key.toString(),
-      ));
-    }
-
-    return items;
-  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,23 +72,41 @@ class _AddMiningAddressView
                     border: UnderlineInputBorder()),
                 initialValue: '',
               ),
-              CheckboxListTile(
-                  value: this.state.checkboxEnabled,
-                  onChanged: (value) => this.state.onCheckboxChanged(value),
-                  title: Text('Set as default?', style: GoogleFonts.lato()),
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  contentPadding: EdgeInsets.only(top: 8)),
-              DropdownButton<String>(
-                value: this.state.dropDownValue,
-                style: GoogleFonts.lato(color: Colors.blue),
-                underline: Container(
-                  height: 2,
-                  color: Colors.blue,
-                ),
-                onChanged: (value) => this.state.onDropDownValueChanged(value),
-                items: _getDropDownItems(),
-                isExpanded: true,
+              FormField<bool>(
+                onSaved: (value) => this.state.onCheckboxChanged(value),
+                initialValue: false,
+                builder: (state) {
+                  return CheckboxListTile(
+                    value: state.value,
+                    onChanged: (value) => state.didChange(value),
+                    title: Text(
+                      'Set as default?',
+                      style: GoogleFonts.lato(),
+                    ),
+                    controlAffinity: ListTileControlAffinity.trailing,
+                    contentPadding: EdgeInsets.only(top: 8),
+                  );
+                },
               ),
+              FormField<String>(
+                  initialValue: 'Pools.ethermine',
+                  onSaved: (value) => this.state.onDropDownValueChanged(value),
+                  enabled: true,
+                  builder: (state) {
+                    return DropdownButton<String>(
+                      value: state.value,
+                      style: GoogleFonts.lato(color: Colors.blue),
+                      underline: Container(height: 2, color: Colors.blue),
+                      isExpanded: true,
+                      items: poolDetails.entries.map((e) {
+                        return DropdownMenuItem<String>(
+                          child: Text(e.value),
+                          value: e.key.toString(),
+                        );
+                      }).toList(),
+                      onChanged: (value) => state.didChange(value),
+                    );
+                  }),
               Container(
                 padding: EdgeInsets.only(top: 8),
                 child: Row(
