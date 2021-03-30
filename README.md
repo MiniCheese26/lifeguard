@@ -1,16 +1,13 @@
 # lifeguard
 
-All your mining pool stats in one place
+Helping you to keep an eye on all your mining pools
 
-## Getting Started
+## What is this?
 
-This project is a starting point for a Flutter application.
+I recently got into Ethereum mining (with some RavenCoin on the side) and wanted to create an to keep all my different mining pool
+stats in a single place.
 
-A few resources to get you started if this is your first Flutter project:
+## My First Flutter App
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+I've never used Flutter or Dart or touched Android development at all so this is way for me to dip my toes in.
+So if you're more experienced and see some glaring oversights or inefficiencies feel free to create a PR!

@@ -1,5 +1,5 @@
 name: lifeguard
-description: All your mining pool stats in one place
+description: Helping you to keep an eye on all your mining pools
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

@@ -91,7 +91,6 @@ class _AddMiningAddressView
               FormField<String>(
                   initialValue: 'Pools.ethermine',
                   onSaved: (value) => this.state.onDropDownValueChanged(value),
-                  enabled: true,
                   builder: (state) {
                     return DropdownButton<String>(
                       value: state.value,
