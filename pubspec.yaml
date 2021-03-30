@@ -23,10 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts:
-  sqflite:
-  path:
+  google_fonts: ^2.0.0
+  sqflite: ^2.0.0+3
+  path: ^1.8.0
   flutter_speed_dial: ^3.0.5
+  enum_to_string: ^2.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

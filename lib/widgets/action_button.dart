@@ -66,18 +66,18 @@ class _ActionButtonView
 
     if (widget.activeAddress != null) {
       children.add(SpeedDialChild(
-          child: Icon(Icons.add),
-          backgroundColor: Colors.blue,
-          label: 'Remove Mining Address',
-          labelStyle: GoogleFonts.lato(color: Colors.black),
-          labelBackgroundColor: Colors.red,
-          onTap: () => {}),);
-      children.add(SpeedDialChild(
-          child: Icon(Icons.add),
+          child: Icon(Icons.edit),
           backgroundColor: Colors.blue,
           label: 'Edit Mining Address',
           labelStyle: GoogleFonts.lato(color: Colors.white),
           labelBackgroundColor: Colors.blue,
+          onTap: () => {}),);
+      children.add(SpeedDialChild(
+          child: Icon(Icons.delete),
+          backgroundColor: Colors.red,
+          label: 'Remove Mining Address',
+          labelStyle: GoogleFonts.lato(color: Colors.white),
+          labelBackgroundColor: Colors.red,
           onTap: () => {}),);
     }
 

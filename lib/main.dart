@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lifeguard/pools.dart';
+import 'package:lifeguard/miningPools.dart';
 import 'package:lifeguard/widgets/home.dart';
 
 class Address {

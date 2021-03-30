@@ -7,6 +7,8 @@ final miningPoolPrettyNames = {
 };
 
 bool validateMiningPoolAddress(MiningPool pool, String address) {
+  address = address.trim();
+
   switch (pool) {
     case MiningPool.ethermine:
     case MiningPool.flexpool:

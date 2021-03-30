@@ -1,10 +1,12 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifeguard/database_helper.dart';
-import 'package:lifeguard/pools.dart';
+import 'package:lifeguard/miningPools.dart';
 import 'package:lifeguard/widgets/home.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
+import 'package:sqflite/sqflite.dart';
 
 class AddMiningAddress extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class AddMiningAddress extends StatefulWidget {
 
 class _AddMiningAddressController extends State<AddMiningAddress> {
   bool? checkboxEnabled = false;
-  String? dropDownValue = 'MiningPool.ethermine';
+  String? dropDownValue = '';
   String? miningAddress = '';
 
   @override
@@ -43,15 +45,36 @@ class _AddMiningAddressController extends State<AddMiningAddress> {
     if (formKey.currentState != null) {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        
+
         final db = await DatabaseHelper.instance.database;
+
+        if (db != null) {
+          final defaultCount = Sqflite.firstIntValue(await db.rawQuery(
+              'SELECT COUNT(*) FROM saved_addresses WHERE is_default = 1'));
+
+          if (defaultCount == 0) {
+            setState(() {
+              checkboxEnabled = true;
+            });
+          }
+
+          int newId = -1;
+          await db.transaction((txn) async {
+            newId = await txn.rawInsert(
+                'INSERT INTO saved_addresses(address, pool, is_default) VALUES (?, ?, ?)',
+                [
+                  miningAddress,
+                  dropDownValue,
+                  checkboxEnabled ?? false ? '1' : '0'
+                ]);
+          });
+
+          Navigator.pop(context, {'newId': newId});
+        } else {
+          // failed snack thing
+        }
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 }
 
@@ -80,12 +103,16 @@ class _AddMiningAddressView
                     return 'Enter an address';
                   }
 
-                  final valueAsEnum = MiningPool.values.firstWhere((element) =>
-                      element.toString() == this.state.dropDownValue);
+                  final miningPool = EnumToString.fromString(
+                      MiningPool.values, this.state.dropDownValue ?? '');
 
-                  return validateMiningPoolAddress(valueAsEnum, value)
-                      ? null
-                      : 'Enter a valid address';
+                  if (miningPool != null) {
+                    return validateMiningPoolAddress(miningPool, value)
+                        ? null
+                        : 'Enter a valid address';
+                  }
+
+                  return null;
                 },
                 decoration: InputDecoration(
                     labelText: 'Mining Address',
@@ -110,7 +137,7 @@ class _AddMiningAddressView
                 },
               ),
               FormField<String>(
-                  initialValue: 'MiningPool.ethermine',
+                  initialValue: 'ethermine',
                   onSaved: (value) => this.state.onDropDownValueSaved(value),
                   builder: (state) {
                     return DropdownButton<String>(
@@ -121,7 +148,7 @@ class _AddMiningAddressView
                       items: miningPoolPrettyNames.entries.map((e) {
                         return DropdownMenuItem<String>(
                           child: Text(e.value),
-                          value: e.key.toString(),
+                          value: EnumToString.convertToString(e.key),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -140,13 +167,7 @@ class _AddMiningAddressView
                         'Add Address',
                         style: GoogleFonts.lato(color: Colors.white),
                       ),
-                      onPressed: () {
-                        if (this.state.formKey.currentState != null) {
-                          return this.state.formKey.currentState!.validate() ? this.state.onAddButtonPressed() : null;
-                        }
-
-                        return null;
-                      },
+                      onPressed: () => this.state.onAddButtonPressed(),
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Color(0xff64b450)),
