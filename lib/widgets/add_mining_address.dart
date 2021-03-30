@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifeguard/database_helper.dart';
 import 'package:lifeguard/pools.dart';
 import 'package:lifeguard/widgets/home.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
@@ -12,29 +13,38 @@ class AddMiningAddress extends StatefulWidget {
 
 class _AddMiningAddressController extends State<AddMiningAddress> {
   bool? checkboxEnabled = false;
-  String? dropDownValue = 'Pools.ethermine';
+  String? dropDownValue = 'MiningPool.ethermine';
+  String? miningAddress = '';
 
   @override
   Widget build(BuildContext context) => _AddMiningAddressView(this);
 
   final formKey = GlobalKey<FormState>();
 
-  onCheckboxChanged(bool? value) {
+  onCheckboxSaved(bool? value) {
     setState(() {
       checkboxEnabled = value;
     });
   }
 
-  onDropDownValueChanged(String? value) {
+  onDropDownValueSaved(String? value) {
     setState(() {
       dropDownValue = value;
     });
   }
 
-  onAddButtonPressed() {
+  onTextFieldSaved(String? value) {
+    setState(() {
+      miningAddress = value;
+    });
+  }
+
+  onAddButtonPressed() async {
     if (formKey.currentState != null) {
       if (formKey.currentState!.validate()) {
-        //Navigator.pop(context);
+        formKey.currentState!.save();
+        
+        final db = await DatabaseHelper.instance.database;
       }
     }
   }
@@ -64,8 +74,19 @@ class _AddMiningAddressView
           child: Column(
             children: [
               TextFormField(
-                validator: (value) =>
-                    value != null && value.isEmpty ? 'Enter an address' : null,
+                onSaved: (value) => this.state.onTextFieldSaved(value),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter an address';
+                  }
+
+                  final valueAsEnum = MiningPool.values.firstWhere((element) =>
+                      element.toString() == this.state.dropDownValue);
+
+                  return validateMiningPoolAddress(valueAsEnum, value)
+                      ? null
+                      : 'Enter a valid address';
+                },
                 decoration: InputDecoration(
                     labelText: 'Mining Address',
                     labelStyle: GoogleFonts.lato(),
@@ -73,7 +94,7 @@ class _AddMiningAddressView
                 initialValue: '',
               ),
               FormField<bool>(
-                onSaved: (value) => this.state.onCheckboxChanged(value),
+                onSaved: (value) => this.state.onCheckboxSaved(value),
                 initialValue: false,
                 builder: (state) {
                   return CheckboxListTile(
@@ -89,21 +110,24 @@ class _AddMiningAddressView
                 },
               ),
               FormField<String>(
-                  initialValue: 'Pools.ethermine',
-                  onSaved: (value) => this.state.onDropDownValueChanged(value),
+                  initialValue: 'MiningPool.ethermine',
+                  onSaved: (value) => this.state.onDropDownValueSaved(value),
                   builder: (state) {
                     return DropdownButton<String>(
                       value: state.value,
                       style: GoogleFonts.lato(color: Colors.blue),
                       underline: Container(height: 2, color: Colors.blue),
                       isExpanded: true,
-                      items: poolDetails.entries.map((e) {
+                      items: miningPoolPrettyNames.entries.map((e) {
                         return DropdownMenuItem<String>(
                           child: Text(e.value),
                           value: e.key.toString(),
                         );
                       }).toList(),
-                      onChanged: (value) => state.didChange(value),
+                      onChanged: (value) {
+                        state.didChange(value);
+                        this.state.onDropDownValueSaved(value);
+                      },
                     );
                   }),
               Container(
@@ -116,7 +140,13 @@ class _AddMiningAddressView
                         'Add Address',
                         style: GoogleFonts.lato(color: Colors.white),
                       ),
-                      onPressed: this.state.onAddButtonPressed(),
+                      onPressed: () {
+                        if (this.state.formKey.currentState != null) {
+                          return this.state.formKey.currentState!.validate() ? this.state.onAddButtonPressed() : null;
+                        }
+
+                        return null;
+                      },
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Color(0xff64b450)),

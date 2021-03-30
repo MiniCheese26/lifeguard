@@ -5,7 +5,7 @@ import 'package:lifeguard/widgets/home.dart';
 
 class Address {
   final String address;
-  final Pools pool;
+  final MiningPool pool;
 
   Address({required this.address, required this.pool});
 
