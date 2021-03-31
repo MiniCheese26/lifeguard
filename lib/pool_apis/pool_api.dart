@@ -2,11 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:lifeguard/alerts.dart';
 
-enum RequestTypes {
- GET,
- POST
-}
-
 abstract class PoolApi {
   late String apiBase;
   late Map<String,String>? headers;
