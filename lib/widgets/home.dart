@@ -5,7 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lifeguard/database_helper.dart';
-import 'package:lifeguard/miningPools.dart';
+import 'package:lifeguard/mining_pools.dart';
 import 'package:lifeguard/pool_apis/pool_api.dart';
 import 'package:lifeguard/pool_apis/flexpool.dart';
 import 'package:lifeguard/widgets/action_button.dart';

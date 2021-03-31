@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifeguard/database_helper.dart';
-import 'package:lifeguard/miningPools.dart';
+import 'package:lifeguard/mining_pools.dart';
 import 'package:lifeguard/widgets/home.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
 import 'package:sqflite/sqflite.dart';
