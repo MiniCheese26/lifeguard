@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  event:
+    dependency: "direct main"
+    description:
+      name: event
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -110,7 +117,7 @@ packages:
     source: hosted
     version: "2.0.0"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -233,6 +240,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+2"
+  stack:
+    dependency: "direct main"
+    description:
+      name: stack
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   stack_trace:
     dependency: transitive
     description:

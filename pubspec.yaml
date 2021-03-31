@@ -28,6 +28,9 @@ dependencies:
   path: ^1.8.0
   flutter_speed_dial: ^3.0.5
   enum_to_string: ^2.0.1
+  http: ^0.13.1
+  stack: ^0.1.5
+  event: ^2.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

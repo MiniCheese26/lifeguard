@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lifeguard/database_helper.dart';
 import 'package:lifeguard/miningPools.dart';
+import 'package:lifeguard/pool_apis/pool_api.dart';
+import 'package:lifeguard/pool_apis/flexpool.dart';
 import 'package:lifeguard/widgets/action_button.dart';
 import 'package:lifeguard/widgets/info.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
@@ -34,8 +36,6 @@ class _HomeController extends State<Home> {
   void initState() {
     super.initState();
     _loadDatabaseAsync().then((_) {
-      print(activeAddress!.miningPoolName);
-      print(activeAddress!.address);
       if (activeAddress != null) {
         setState(() {
           appTitle =
