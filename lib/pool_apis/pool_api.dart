@@ -2,6 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:lifeguard/alerts.dart';
 
+class Hashrates {
+  int effectiveHashrate;
+  int reportedHashrate;
+
+  Hashrates(this.effectiveHashrate, this.reportedHashrate);
+}
+
+class Shares {
+  int validShares;
+  int staleShares;
+  int invalidShares;
+
+  Shares(this.validShares, this.staleShares, this.invalidShares);
+}
+
 abstract class PoolApi {
   late String apiBase;
   late Map<String,String>? headers;
@@ -11,6 +26,11 @@ abstract class PoolApi {
   PoolApi(this.alerts);
 
   Future<int> getMinerBalance(String address);
+  Future<Hashrates> getHashRates(String address);
+  Future<Shares> getSharesStats(String address, [String? worker]);
+  Future<int> getAverageEffectiveHashrate(String address, [String? worker]);
+  Future<List<String>> getWorkers(String address);
+  void raiseAlert(String alertMessage, http.Response? response);
 
   @mustCallSuper
   bool checkApiResponse(http.Response? response) {
@@ -18,7 +38,7 @@ abstract class PoolApi {
       return false;
     }
 
-    if (response.statusCode != 200) {
+    if (response.statusCode < 200 || response.statusCode >= 300) {
       return false;
     }
 
@@ -58,5 +78,10 @@ abstract class PoolApi {
       default:
         return null;
     }
+  }
+
+  Future<http.Response?> quickGet(String path) async {
+    final requestUri = buildRequestUri(path);
+    return await makeRequest(requestUri);
   }
 }
