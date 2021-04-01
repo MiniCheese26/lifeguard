@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:lifeguard/alerts.dart';
 import 'package:lifeguard/pool_apis/pool_api.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:lifeguard/extensions/string_checking.dart';
 
 class FlexpoolApi extends PoolApi {
   @override
@@ -33,7 +34,7 @@ class FlexpoolApi extends PoolApi {
   Future<Hashrates> getHashRates(String address, [String? worker]) async {
     var response;
 
-    if (worker == null || worker.isEmpty) {
+    if (worker.isNullOrEmpty()) {
       response = await quickGet('/miner/$address/current');
     } else {
       response = await quickGet('/miner/$address/$worker/current');
@@ -55,7 +56,7 @@ class FlexpoolApi extends PoolApi {
   Future<Shares> getSharesStats(String address, [String? worker]) async {
     var response;
 
-    if (worker == null || worker.isEmpty) {
+    if (worker.isNullOrEmpty()) {
       response = await quickGet('/miner/$address/stats');
     } else {
       response = await quickGet('/miner/$address/$worker/stats');
@@ -80,7 +81,7 @@ class FlexpoolApi extends PoolApi {
   Future<int> getAverageEffectiveHashrate(String address, [String? worker]) async {
     var response;
 
-    if (worker == null || worker.isEmpty) {
+    if (worker.isNullOrEmpty()) {
       response = await quickGet('/miner/$address/stats');
     } else {
       response = await quickGet('/miner/$address/$worker/stats');
