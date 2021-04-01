@@ -1,3 +1,5 @@
+// Credit: https://stackoverflow.com/a/54223930
+
 import 'dart:io' show Directory;
 import 'package:path/path.dart' show join;
 import 'package:sqflite/sqflite.dart';
@@ -45,8 +47,8 @@ class DatabaseHelper {
     CREATE TABLE saved_workers (
     id INTEGER PRIMARY KEY,
     address_id INTEGER,
-    worker_name TEXT NOT NULL
-    FOREIGN KEY (address_id) REFERENCES saved_addresses(id)
+    worker_name TEXT NOT NULL,
+    FOREIGN KEY(address_id) REFERENCES saved_addresses(id)
     )
     ''');
   }

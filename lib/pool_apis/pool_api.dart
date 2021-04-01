@@ -53,10 +53,8 @@ abstract class PoolApi {
     switch (type.toLowerCase()) {
       case 'get':
         return await http.get(uri, headers: headers);
-        break;
       case 'post':
         return await http.post(uri, body: body, headers: headers);
-        break;
       default:
         return null;
     }

@@ -1,13 +1,14 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifeguard/alerts.dart';
 
 import 'package:lifeguard/database_helper.dart';
 import 'package:lifeguard/mining_pools.dart';
-import 'package:lifeguard/pool_apis/pool_api.dart';
-import 'package:lifeguard/pool_apis/flexpool.dart';
 import 'package:lifeguard/widgets/action_button.dart';
 import 'package:lifeguard/widgets/info.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
@@ -29,6 +30,7 @@ class _HomeController extends State<Home> {
   ActiveAddress? activeAddress;
   List<ActiveAddress>? storedAddresses;
   bool noAddressesStored = false;
+  Alerts alerts = new Alerts();
 
   Widget build(BuildContext context) => _HomeView(this);
 
@@ -42,6 +44,19 @@ class _HomeController extends State<Home> {
               miningPoolPrettyNames[activeAddress!.miningPoolName] ?? appTitle;
         });
       }
+
+      alerts.alertRaised.subscribe((args) {
+        if (args != null) {
+          //enqueuedAlerts.add(args);
+
+          final snackBar = SnackBar(
+            content: Text(args.alert),
+            duration: Duration(milliseconds: 2500),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      });
     });
   }
 
@@ -99,7 +114,8 @@ class _HomeView extends WidgetView<Home, _HomeController> {
               style: GoogleFonts.lato(),
             )),
         // body is the majority of the screen.
-        body: Info(state.activeAddress),
-        floatingActionButton: ActionButton(state.activeAddress));
+        body: Info(this.state.activeAddress, this.state.alerts),
+        floatingActionButton:
+            ActionButton(state.activeAddress, this.state.alerts));
   }
 }

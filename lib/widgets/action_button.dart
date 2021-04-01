@@ -2,14 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifeguard/alerts.dart';
 import 'package:lifeguard/widgets/add_mining_address.dart';
 import 'package:lifeguard/widgets/home.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
 
 class ActionButton extends StatefulWidget {
   final ActiveAddress? activeAddress;
+  final Alerts alerts;
 
-  ActionButton(this.activeAddress, {Key? key}) : super(key: key);
+  ActionButton(this.activeAddress, this.alerts);
 
   @override
   _ActionButtonController createState() => _ActionButtonController();
@@ -25,7 +27,7 @@ class _ActionButtonController extends State<ActionButton> {
   }
 
   Future<void> onMiningAddressAdd() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AddMiningAddress()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => AddMiningAddress(this.widget.alerts)));
   }
 }
 

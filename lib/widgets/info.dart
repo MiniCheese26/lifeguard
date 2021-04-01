@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifeguard/alerts.dart';
 import 'package:lifeguard/widgets/home.dart';
 import 'package:lifeguard/widgets/widget_view.dart';
 
 class Info extends StatefulWidget {
   final ActiveAddress? activeAddress;
+  final Alerts alerts;
 
-  Info(this.activeAddress, {Key? key}) : super(key: key);
+  Info(this.activeAddress, this.alerts, {Key? key}) : super(key: key);
 
   @override
   _InfoController createState() => _InfoController();

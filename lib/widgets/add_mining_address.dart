@@ -2,6 +2,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifeguard/alerts.dart';
 import 'package:lifeguard/database_helper.dart';
 import 'package:lifeguard/mining_pools.dart';
 import 'package:lifeguard/widgets/home.dart';
@@ -9,6 +10,10 @@ import 'package:lifeguard/widgets/widget_view.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AddMiningAddress extends StatefulWidget {
+  final Alerts alerts;
+
+  AddMiningAddress(this.alerts);
+
   @override
   _AddMiningAddressController createState() => _AddMiningAddressController();
 }

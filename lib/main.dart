@@ -14,7 +14,7 @@ class Address {
   }
 }
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(App());
